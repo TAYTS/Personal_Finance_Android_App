@@ -1,59 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:layout_height="wrap_content"
+        android:id="@+id/appBar"
         android:layout_width="match_parent"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginBottom="0dp"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/pieChartFrame"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" >
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:textAlignment="center"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:titleTextAppearance="@style/Toolbar.TitleText"/>
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorPrimary"
+        android:textAlignment="center"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:titleTextAppearance="@style/Toolbar.TitleText" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <!--<include layout="@layout/content_main"/>-->
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/incomeFAB"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:id="@+id/pieChartFrame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/layoutMarginSmall"
+        android:paddingLeft="@dimen/paddingSmall"
+        android:paddingRight="@dimen/paddingSmall"
+        app:layout_constraintBottom_toTopOf="@+id/listDescriptions"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBar">
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieChart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
+
+    <ListView
+        android:id="@+id/listDescriptions"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="@dimen/layoutMarginSmall"
+        android:layout_marginBottom="@dimen/layoutMarginSmall"
+        android:drawSelectorOnTop="false"
+        app:layout_constraintBottom_toTopOf="@id/fabFrame"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pieChartFrame" />
+
+    <FrameLayout
+        android:id="@+id/fabFrame"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:layout_margin="@dimen/fab_margin"
-        android:scaleType="center"
-        app:fabSize="normal"
-        app:srcCompat="@drawable/ic_plus_solid" />
+        android:layout_marginTop="@dimen/layoutMarginSmall"
+        android:layout_marginBottom="@dimen/layoutMarginSmall"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/listDescriptions">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/expensesFAB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:scaleType="center"
-        app:fabSize="normal"
-        app:srcCompat="@drawable/ic_minus_solid" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/incomeFAB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_marginLeft="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:scaleType="center"
+            app:fabSize="normal"
+            app:srcCompat="@drawable/ic_plus_solid" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/recordFAB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_margin="@dimen/fab_margin"
-        android:scaleType="center"
-        app:fabSize="normal"
-        app:srcCompat="@drawable/ic_file_invoice_dollar_solid" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/expensesFAB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginLeft="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:scaleType="center"
+            app:fabSize="normal"
+            app:srcCompat="@drawable/ic_minus_solid" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/recordFAB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginLeft="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:scaleType="center"
+            app:fabSize="normal"
+            app:srcCompat="@drawable/ic_file_invoice_dollar_solid" />
+    </FrameLayout>
 
 
-</android.support.design.widget.CoordinatorLayout>
+
+
+</android.support.constraint.ConstraintLayout>
