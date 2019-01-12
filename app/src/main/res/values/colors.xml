@@ -4,4 +4,9 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="textColorPrimary">#000000</color>
+    <color name="colorEntertainment">#FF9B71</color>
+    <color name="colorFood">#B56B45</color>
+    <color name="colorOthers">#05607D</color>
+    <color name="colorLoan">#E84855</color>
+    <color name="colorSalary">#FF9B71</color>
 </resources>
