@@ -8,6 +8,7 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.Update;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public interface RecordDao {
     @Query("SELECT * FROM RECORD " +
             "WHERE (RECORD_TYPE = :recordType) AND CREATE_TIMESTAMP BETWEEN :startDate AND :endDate " +
             "ORDER BY CREATE_TIMESTAMP ASC")
-    LiveData<List<Record>> getRecordByRange(int recordType, Date startDate, Date endDate);
+    LiveData<List<Record>> getRecordByRange(int recordType, Calendar startDate, Calendar endDate);
 
     // Update record
     @Update(onConflict = REPLACE)
