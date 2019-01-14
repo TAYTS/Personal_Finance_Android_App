@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/formTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/formFrame"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:text="INCOME"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <LinearLayout
+        android:id="@+id/formFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/formTitle" >
+
+        <EditText
+            android:id="@+id/editTextAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_amount"
+            android:drawablePadding="12dp"
+            android:backgroundTint="@color/colorFormIcon"
+            android:gravity="start"
+            android:layout_marginTop="@dimen/editMargin"
+            android:layout_marginLeft="@dimen/editMargin"
+            android:layout_marginRight="@dimen/editMargin"
+            android:textSize="@dimen/textSizeForm"
+            android:hint="@string/hintAmount"
+            android:inputType="numberDecimal"
+            android:longClickable="false"
+            android:textIsSelectable="false"/>
+
+        <EditText
+            android:id="@+id/editDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_description"
+            android:drawablePadding="@dimen/drawPadding"
+            android:backgroundTint="@color/colorFormIcon"
+            android:layout_marginTop="@dimen/editMargin"
+            android:layout_marginLeft="@dimen/editMargin"
+            android:layout_marginRight="@dimen/editMargin"
+            android:textSize="@dimen/textSizeForm"
+            android:hint="@string/hintDescription"
+            android:inputType="textAutoCorrect" />
+
+        <EditText
+            android:id="@+id/editCalender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_calendar"
+            android:drawablePadding="@dimen/drawPadding"
+            android:backgroundTint="@color/colorFormIcon"
+            android:layout_marginTop="@dimen/editMargin"
+            android:layout_marginLeft="@dimen/editMargin"
+            android:layout_marginRight="@dimen/editMargin"
+            android:textSize="@dimen/textSizeForm"
+            android:clickable="true"
+            android:focusable="false"
+            android:longClickable="false"
+            android:hint="@string/hintDate"
+            android:inputType="date" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/editMargin"
+            android:layout_marginLeft="@dimen/editMargin"
+            android:layout_marginRight="@dimen/editMargin"
+            android:paddingStart="4dp" >
+
+            <ImageView
+                android:id="@+id/spinnerIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_type"/>
+
+            <Spinner
+                android:id="@+id/spinnerType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</android.support.constraint.ConstraintLayout>

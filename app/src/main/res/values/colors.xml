@@ -4,9 +4,10 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="textColorPrimary">#000000</color>
-    <color name="colorEntertainment">#FF9B71</color>
-    <color name="colorFood">#B56B45</color>
-    <color name="colorOthers">#05607D</color>
-    <color name="colorLoan">#E84855</color>
-    <color name="colorSalary">#FF9B71</color>
+    <color name="colorEntertainment">#F1C40F</color>
+    <color name="colorFood">#E74C3C</color>
+    <color name="colorOthers">#3498DB</color>
+    <color name="colorLoan">#9B59B6</color>
+    <color name="colorSalary">#1ABC9C</color>
+    <color name="colorFormIcon">#95a5a6</color>
 </resources>

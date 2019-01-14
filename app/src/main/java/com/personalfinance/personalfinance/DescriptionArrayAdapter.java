@@ -43,7 +43,7 @@ public class DescriptionArrayAdapter extends ArrayAdapter<String> {
         }
 
         viewHolder.textViewType.setText(values[position]);
-        viewHolder.imageViewBullet.setImageResource(R.drawable.ic_circle_entertainment);
+        viewHolder.imageViewBullet.setImageResource(R.drawable.ic_bullet_entertainment);
 
         // Return the completed view to render on screen
         return convertView;
