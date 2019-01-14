@@ -15,7 +15,7 @@ import static android.arch.persistence.room.OnConflictStrategy.IGNORE;
 import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 @Dao
-@TypeConverters({BigDecimalConverter.class, DateConverter.class})
+@TypeConverters({BigDecimalConverter.class, CalendarConverter.class})
 public interface RecordDao {
 
     // Insert new record
