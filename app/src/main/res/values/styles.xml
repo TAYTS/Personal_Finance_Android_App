@@ -23,4 +23,15 @@
         <item name="android:textSize">28dp</item>
     </style>
 
+    <!-- Date Picker Style -->
+    <style name="DatePicker" parent="@android:style/Theme.Holo.Dialog">
+        <item name="android:calendarViewShown">false</item>
+        <item name="android:datePickerMode">spinner</item>
+    </style>
+
+    <!-- Spinner Style -->
+    <style name="SpinnerEntry" parent="@android:style/Widget.TextView.SpinnerItem">
+        <item name="android:textSize">@dimen/textSizeForm</item>
+    </style>
+
 </resources>
