@@ -1,6 +1,7 @@
 package com.personalfinance.personalfinance;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -28,18 +29,33 @@ public class MainActivity extends AppCompatActivity {
     private double totalIncome = 0.0;
     private double totalExpenses = 999.00;
     private ListView listViewDesciptions;
+    private Toolbar toolbar;
+    private PieChart pieChart;
+    private ArrayList<Integer> colors;
+    private List<PieEntry> entries;
+    private PieDataSet dataSet;
+    private PieData pieData;
+    private FloatingActionButton fabIncome;
+    private FloatingActionButton fabRecord;
+    private FloatingActionButton fabExpense;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Get all the views
+        toolbar = findViewById(R.id.toolbar);
+        pieChart = findViewById(R.id.pieChart);
+        fabIncome = findViewById(R.id.incomeFAB);
+        fabRecord = findViewById(R.id.recordFAB);
+        fabExpense = findViewById(R.id.expensesFAB);
+        listViewDesciptions = findViewById(R.id.listDescriptions);
+
+
         // Get Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Get Pie Chart
-        PieChart pieChart = findViewById(R.id.pieChart);
 
         // Pie Chart Settings
         pieChart.getDescription().setEnabled(false);
@@ -51,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Create Pie Chart data set color
         // TODO: Delegate to other functions
-        ArrayList<Integer> colors = new ArrayList<>();
+        colors = new ArrayList<>();
         colors.add(Color.parseColor(this.getString(R.color.colorEntertainment)));
         colors.add(Color.parseColor(this.getString(R.color.colorFood)));
         colors.add(Color.parseColor(this.getString(R.color.colorOthers)));
@@ -59,59 +75,65 @@ public class MainActivity extends AppCompatActivity {
 
         // Create data for Pie Chart
         // TODO: Delegate to other functions
-        List<PieEntry> entries = new ArrayList<>();
+        entries = new ArrayList<>();
         entries.add(new PieEntry(18.5f, this.getString(R.string.expenseEntertainment)));
         entries.add(new PieEntry(26.7f, this.getString(R.string.expenseFood)));
         entries.add(new PieEntry(10.0f, this.getString(R.string.expenseOthers)));
         entries.add(new PieEntry(100.8f, this.getString(R.string.expenseLoan)));
 
         // Create the Pie Chart data set
-        PieDataSet set = new PieDataSet(entries, "Expenses");
+        dataSet = new PieDataSet(entries, "Expenses");
 
         // Settings for the Pie Chart data set
-        set.setColors(colors);
-        set.setSliceSpace(5);
-        set.setSelectionShift(10);
-        set.setDrawValues(false);
+        dataSet.setColors(colors);
+        dataSet.setSliceSpace(5);
+        dataSet.setSelectionShift(10);
+        dataSet.setDrawValues(false);
 
         // Create the Pie Chart Data
-        PieData data = new PieData(set);
+        pieData = new PieData(dataSet);
 
         // Set the Pie Chart data
-        pieChart.setData(data);
+        pieChart.setData(pieData);
 
         // Add animation to display the Pie Chart
         pieChart.animateXY(1000, 1000);
 
 
-        // Get the floating button
-        FloatingActionButton fab = findViewById(R.id.incomeFAB);
-        fab.setOnClickListener(new View.OnClickListener() {
+        // Fab Income Listener
+        fabIncome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent( MainActivity.this, FormActivity.class);
+                intent.putExtra(getResources().getString(R.string.recordID), getResources().getString(R.string.recordIncome));
+                startActivity(intent);
             }
         });
 
+        // Fab Record Listener
+        fabRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
+
+        // Fab Expense Listener
+        fabExpense.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent( MainActivity.this, FormActivity.class);
+                intent.putExtra(getResources().getString(R.string.recordID), getResources().getString(R.string.recordExpense));
+                startActivity(intent);
+            }
+        });
+
+
         // Test List View
-        listViewDesciptions = findViewById(R.id.listDescriptions);
         String[] values = new String[] { "Entertainment (123.54%)", "Food (50.12%)", "Load (23.12%)",
                 "Others (23.25%)"};
 
-
-//
-//        final ArrayList<String> list = new ArrayList<String>();
-//        for (int i = 0; i < values.length; ++i) {
-//            list.add(values[i]);
-//        }
         final DescriptionArrayAdapter adapter = new DescriptionArrayAdapter(this, values);
         listViewDesciptions.setAdapter(adapter);
-
-
-
-
-
     }
 
     @Override
@@ -143,32 +165,6 @@ public class MainActivity extends AppCompatActivity {
 
         return moneyString;
     }
-
-    private class StableArrayAdapter extends ArrayAdapter<String> {
-
-        HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
-
-        public StableArrayAdapter(Context context, int textViewResourceId,
-                                  List<String> objects) {
-            super(context, textViewResourceId, objects);
-            for (int i = 0; i < objects.size(); ++i) {
-                mIdMap.put(objects.get(i), i);
-            }
-        }
-
-        @Override
-        public long getItemId(int position) {
-            String item = getItem(position);
-            return mIdMap.get(item);
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return true;
-        }
-
-    }
-
 }
 
 
