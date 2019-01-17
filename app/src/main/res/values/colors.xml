@@ -10,4 +10,5 @@
     <color name="colorLoan">#9B59B6</color>
     <color name="colorSalary">#1ABC9C</color>
     <color name="colorFormIcon">#95a5a6</color>
+    <color name="colorAddButton">#34495e</color>
 </resources>

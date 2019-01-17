@@ -7,60 +7,33 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBar"
+    <Spinner
+        android:id="@+id/spinnerMonth"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_marginBottom="0dp"
-        android:theme="@style/AppTheme.AppBarOverlay"
+        android:layout_height="50dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="@dimen/layoutMarginSmall"
+        android:layout_marginStart="30dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/pieChartFrame"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" >
+        app:layout_constraintBottom_toTopOf="@id/summaryViewPager"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-        <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/colorPrimary"
-        android:textAlignment="center"
-        app:popupTheme="@style/AppTheme.PopupOverlay"
-        app:titleTextAppearance="@style/Toolbar.TitleText" />
-
-    </android.support.design.widget.AppBarLayout>
-
-
-    <FrameLayout
-        android:id="@+id/pieChartFrame"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/summaryViewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/layoutMarginSmall"
         android:layout_marginBottom="@dimen/layoutMarginSmall"
         android:paddingLeft="@dimen/paddingSmall"
         android:paddingRight="@dimen/paddingSmall"
-        app:layout_constraintBottom_toTopOf="@+id/listDescriptions"
+        app:layout_constraintBottom_toTopOf="@+id/fabFrame"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBar">
+        app:layout_constraintTop_toBottomOf="@id/spinnerMonth">
 
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/pieChart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+    </android.support.v4.view.ViewPager>
 
-    </FrameLayout>
-
-    <ListView
-        android:id="@+id/listDescriptions"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginTop="@dimen/layoutMarginSmall"
-        android:layout_marginBottom="@dimen/layoutMarginSmall"
-        android:drawSelectorOnTop="false"
-        app:layout_constraintBottom_toTopOf="@id/fabFrame"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pieChartFrame" />
 
     <FrameLayout
         android:id="@+id/fabFrame"
@@ -71,7 +44,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/listDescriptions">
+        app:layout_constraintTop_toBottomOf="@id/summaryViewPager">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/incomeFAB"
