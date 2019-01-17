@@ -2,41 +2,44 @@ package com.personalfinance.personalfinance;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.text.NumberFormat;
+import com.google.gson.Gson;
+
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 
 public class FormActivity extends AppCompatActivity {
-    private String recordType;
+    private int recordType;
     private TextView textViewTitle;
     private EditText editTextAmount;
     private EditText editTextDescription;
     private EditText editTextDate;
     private Spinner spinnerType;
+    private Button buttonAddRecord;
     private Calendar calendar;
     private Locale locale = new Locale("en","MY");
     private String[] typesArray;
+    private RecordViewModel recordViewModel;
 
     // Define constant
     private static final String DATEFORMAT = "dd MMMM yyyy";
@@ -48,7 +51,7 @@ public class FormActivity extends AppCompatActivity {
 
         // Set the record type
         Intent intent = getIntent();
-        recordType = intent.getStringExtra(getResources().getString(R.string.recordID));
+        recordType = intent.getIntExtra(getResources().getString(R.string.recordID), 0);
 
         // Get Calendar instance
         calendar = Calendar.getInstance(locale);
@@ -60,14 +63,14 @@ public class FormActivity extends AppCompatActivity {
         editTextDescription = findViewById(R.id.editDescription);
         editTextDate = findViewById(R.id.editCalender);
         spinnerType = findViewById(R.id.spinnerType);
+        buttonAddRecord = findViewById(R.id.buttonAddRecord);
 
 
         // Set initial values (Title, TYPE string array, calendar)
-        if (recordType.equals("income")) {
+        if (recordType == 0) {
             textViewTitle.setText(R.string.recordIncomeTitle);
             typesArray = getResources().getStringArray(R.array.income_type);
-        }
-        else {
+        } else {
             textViewTitle.setText(R.string.recordExpenseTitle);
             typesArray = getResources().getStringArray(R.array.expenses_type);
         }
@@ -173,6 +176,7 @@ public class FormActivity extends AppCompatActivity {
                                 calendar.set(Calendar.YEAR, year);
                                 calendar.set(Calendar.MONTH, month);
                                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
                                 updateLabel();
                             }
                         }, year, month, day_of_month
@@ -190,7 +194,7 @@ public class FormActivity extends AppCompatActivity {
         // Spinner
         // Create ArrayAdapter for the Type Spinner
         ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(
-                this, R.layout.custom_spinner, typesArray) {
+                this, R.layout.type_spinner, typesArray) {
 
             // Disable the first option
             @Override
@@ -215,9 +219,40 @@ public class FormActivity extends AppCompatActivity {
         };
 
         // Set the dropdown style for the Spinner
-        typeAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown);
+        typeAdapter.setDropDownViewResource(R.layout.type_spinner_dropdown);
         // Add the custom ArrayAdapter to Spinner
         spinnerType.setAdapter(typeAdapter);
+
+
+        // Add Button Add Record Listener
+        buttonAddRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Check all the field has filled
+                String amount = editTextAmount.getText().toString().replaceAll("[RM][ ]*", "");
+                String description = editTextDescription.getText().toString();
+                String date = editTextDate.getText().toString();
+                String type = spinnerType.getSelectedItemPosition() > 0 ? spinnerType.getSelectedItem().toString() : "";
+
+                if (!amount.isEmpty() && !description.isEmpty() && !date.isEmpty() && !type.isEmpty()) {
+                    Intent replyIntent = new Intent();
+                    String sharedPrefFile = getResources().getString(R.string.sharedPreference);
+                    SharedPreferences formData = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
+                    SharedPreferences.Editor editorFormData = formData.edit();
+                    Gson gson = new Gson();
+
+                    BigDecimal amtBigDecimal = new BigDecimal(amount);
+                    Record newRecord = new Record(amtBigDecimal, description, type, recordType, calendar);
+                    String json = gson.toJson(newRecord);
+                    editorFormData.putString("record", json);
+                    editorFormData.commit();
+                    setResult(RESULT_OK, replyIntent);
+                    finish();
+                }
+            }
+        });
+
+
     }
 
 
@@ -226,9 +261,6 @@ public class FormActivity extends AppCompatActivity {
         SimpleDateFormat dateFormatter = new SimpleDateFormat(DATEFORMAT, locale);
         editTextDate.setText(dateFormatter.format(calendar.getTime()));
     }
-
-
-
 }
 
 

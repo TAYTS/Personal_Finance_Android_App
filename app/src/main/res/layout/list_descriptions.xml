@@ -23,8 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_weight="1.6"
-        android:textSize="20sp"
-        android:text="testing"/>
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/amount"
@@ -32,7 +31,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_weight="1"
-        android:textSize="20sp"
-        android:text="RM99.00"/>
+        android:textSize="20sp" />
 
 </LinearLayout>

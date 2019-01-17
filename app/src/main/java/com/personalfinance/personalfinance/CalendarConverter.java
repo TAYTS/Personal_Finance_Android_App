@@ -1,4 +1,4 @@
-package com.personalfinance.personalfinance.db;
+package com.personalfinance.personalfinance;
 
 import android.arch.persistence.room.TypeConverter;
 
