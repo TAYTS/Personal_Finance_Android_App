@@ -1,9 +1,9 @@
 package com.personalfinance.personalfinance;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +28,7 @@ public class SummarySlideAdapter extends PagerAdapter {
     private int pieChartCount;
     private String[] pieChartTitles;
     private ArrayList<LinkedHashMap<String, String>> descriptions;
-    private ArrayList<HashMap<String, BigDecimal>> amount;
+    private ArrayList<HashMap<String, BigDecimal>> amountType;
 
     private TextView pieChartTitle;
     private PieChart pieChart;
@@ -42,13 +42,13 @@ public class SummarySlideAdapter extends PagerAdapter {
             String[] pieChartTitles,
             ArrayList<PieData> pieData,
             ArrayList<LinkedHashMap<String, String>> descriptions,
-            ArrayList<HashMap<String, BigDecimal>> amount) {
+            ArrayList<HashMap<String, BigDecimal>> amountType) {
         this.context = context;
         this.pieChartCount = pieChartCount;
         this.pieChartTitles = pieChartTitles;
         this.pieData = pieData;
         this.descriptions = descriptions;
-        this.amount = amount;
+        this.amountType = amountType;
     }
 
     @Override
@@ -85,7 +85,7 @@ public class SummarySlideAdapter extends PagerAdapter {
         pieChartTitle.setText(pieChartTitles[position]);
 
         // Add Pie Chart data
-        if (pieData.get(position).getDataSet().getYMax() > 0) {
+        if (!pieData.isEmpty() && pieData.get(position).getDataSet().getYMax() > 0) {
             pieChart.setData(pieData.get(position));
             pieChart.animateXY(1000, 1000);
         }
@@ -96,7 +96,7 @@ public class SummarySlideAdapter extends PagerAdapter {
         }
 
 
-        final DescriptionArrayAdapter adapter = new DescriptionArrayAdapter(context, descriptions.get(position), amount.get(position));
+        final DescriptionArrayAdapter adapter = new DescriptionArrayAdapter(context, descriptions.get(position), amountType.get(position));
         listViewDesciptions.setAdapter(adapter);
 
         // Set tag for the view

@@ -58,15 +58,24 @@ public class Record {
         return this.amount;
     }
 
+    // Amount Setter
+    public void setAmount(BigDecimal amount) { this.amount = amount; }
+
     // Description Getter
     public String getDescription() {
         return this.description;
     }
 
+    // Description Setter
+    public void setDescription(String description) { this.description = description; }
+
     // Type Getter
     public String getType() {
         return this.type;
     }
+
+    // Type Setter
+    public void setType(String type) { this.type = type; }
 
     // Record Type Getter
     public int getRecordType() {
@@ -77,4 +86,6 @@ public class Record {
     public Calendar getCreate_timestamp() {
         return this.create_timestamp;
     }
+
+    public void setCreate_timestamp(Calendar timestamp) { this.create_timestamp = timestamp; }
 }

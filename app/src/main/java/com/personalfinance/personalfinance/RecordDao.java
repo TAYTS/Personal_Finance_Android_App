@@ -40,16 +40,16 @@ public interface RecordDao {
     LiveData<List<Record>> getAll();
 
     // Update record
-    @Update(onConflict = REPLACE)
-    void updateRecord(Record record);
+    @Update
+    void updateRecord(Record... records);
 
     // Delete record by Object
-    @Delete
-    int deleteRecord(Record record);
+//    @Delete
+//    int deleteRecord(Record record);
 
     // Delete record by ID
     @Query("DELETE FROM RECORD WHERE ID = :id")
-    int deleteRecord(int id);
+    int deleteRecord(long id);
 
     // Sum by column
     @Query("SELECT TYPE as type, SUM(AMOUNT) as total " +

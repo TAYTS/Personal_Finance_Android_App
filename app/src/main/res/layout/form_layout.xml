@@ -111,7 +111,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:backgroundTint="@color/colorFormIcon"
-        android:text="@string/buttonText" />
+        android:text="@string/buttonTextAdd" />
 
 
 </android.support.constraint.ConstraintLayout>
