@@ -5,11 +5,9 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.os.AsyncTask;
 
-import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 public class RecordRepository {
 
@@ -29,6 +27,8 @@ public class RecordRepository {
         startDate.set(Calendar.DAY_OF_MONTH, 1);
         endDate.set(Calendar.DAY_OF_MONTH, endDate.getActualMaximum(Calendar.DAY_OF_MONTH));
 
+        // Clean past year record
+        this.deletePastRecord();
 
         // Initialise the data
         allRecord = recordDao.getAll();
@@ -155,5 +155,23 @@ public class RecordRepository {
         }
     }
 
+    // Clean database
+    public void deletePastRecord() { new delPastRecAsyncTask(recordDao).execute(); }
+
+    private class delPastRecAsyncTask extends AsyncTask<Void, Void, Void> {
+        private RecordDao asyncTaskDao;
+
+        delPastRecAsyncTask(RecordDao dao) { this.asyncTaskDao = dao; }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Calendar threshold = Calendar.getInstance();
+            threshold.set(Calendar.YEAR, threshold.get(Calendar.YEAR) - 1);
+            threshold.set(Calendar.MONTH, 0);
+            threshold.set(Calendar.DAY_OF_MONTH, 1);
+            asyncTaskDao.deletePastRecord(threshold);
+            return null;
+        }
+    }
 
 }

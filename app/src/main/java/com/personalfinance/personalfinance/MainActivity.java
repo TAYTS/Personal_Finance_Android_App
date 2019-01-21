@@ -145,30 +145,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         recordViewModel.getIncomeTotal().observe(this, new Observer<List<RecordSumPojo>>() {
             @Override
             public void onChanged(@Nullable List<RecordSumPojo> recordSumPojos) {
-                descriptions.add(0, getDescriptionString(recordSumPojos, 0));
-                amountType.add(0, getAllAmountType(recordSumPojos, 0));
-                pieData.add(0, getPieData(recordSumPojos));
-                incomeTotal = getTotal(recordSumPojos);
-                summarySlideAdapter.notifyDataSetChanged();
-                updateBalance();
+                if (recordSumPojos != null) {
+                    descriptions.add(0, getDescriptionString(recordSumPojos, 0));
+                    amountType.add(0, getAllAmountType(recordSumPojos, 0));
+                    pieData.add(0, getPieData(recordSumPojos));
+                    incomeTotal = getTotal(recordSumPojos);
+                    summarySlideAdapter.notifyDataSetChanged();
+                    updateBalance();
+                }
             }
         });
-
 
         recordViewModel.getExpenseTotal().observe(this, new Observer<List<RecordSumPojo>>() {
             @Override
             public void onChanged(@Nullable List<RecordSumPojo> recordSumPojos) {
-                descriptions.add(1, getDescriptionString(recordSumPojos, 1));
-                amountType.add(1, getAllAmountType(recordSumPojos, 1));
-                pieData.add(1, getPieData(recordSumPojos));
-                summarySlideAdapter.notifyDataSetChanged();
-                expenseTotal = getTotal(recordSumPojos);
-                updateBalance();
+                if (recordSumPojos != null) {
+                    descriptions.add(1, getDescriptionString(recordSumPojos, 1));
+                    amountType.add(1, getAllAmountType(recordSumPojos, 1));
+                    pieData.add(1, getPieData(recordSumPojos));
+                    expenseTotal = getTotal(recordSumPojos);
+                    summarySlideAdapter.notifyDataSetChanged();
+                    updateBalance();
+                }
             }
         });
+
 
         // Setup Spinner Month
         ArrayAdapter<CharSequence> monthsAdapter = ArrayAdapter.createFromResource(this, R.array.months, R.layout.months_spinner);
@@ -196,6 +201,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Set Pie Chart View
+        descriptions.add(0, getDescriptionString(new ArrayList<RecordSumPojo>(), 0));
+        amountType.add(0, getAllAmountType(new ArrayList<RecordSumPojo>(), 0));
+        pieData.add(0, getPieData(new ArrayList<RecordSumPojo>()));
+
+        descriptions.add(1, getDescriptionString(new ArrayList<RecordSumPojo>(), 1));
+        amountType.add(1, getAllAmountType(new ArrayList<RecordSumPojo>(), 1));
+        pieData.add(1, getPieData(new ArrayList<RecordSumPojo>()));
         summarySlideAdapter = new SummarySlideAdapter(
                 this,
                 2,
@@ -322,8 +334,10 @@ public class MainActivity extends AppCompatActivity {
             newAmount.putAll(expenseAmt);
         }
 
-        for (RecordSumPojo recordSumPojo : recordSumPojos) {
-            newAmount.put(recordSumPojo.type.toLowerCase(), recordSumPojo.total);
+        if (!recordSumPojos.isEmpty()) {
+            for (RecordSumPojo recordSumPojo : recordSumPojos) {
+                newAmount.put(recordSumPojo.type.toLowerCase(), recordSumPojo.total);
+            }
         }
 
         return newAmount;
