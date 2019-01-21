@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="textColorPrimary">#000000</color>
+    <color name="colorEntertainment">#F1C40F</color>
+    <color name="colorFood">#E74C3C</color>
+    <color name="colorOthers">#3498DB</color>
+    <color name="colorLoan">#9B59B6</color>
+    <color name="colorSalary">#1ABC9C</color>
+    <color name="colorFormIcon">#95a5a6</color>
+    <color name="colorAddButton">#34495e</color>
+    <color name="colorEditButton">#7181F3</color>
+    <color name="colorDelButton">#E60632</color>
+    <color name="colorListHistory">#ECF0F1</color>
+</resources>

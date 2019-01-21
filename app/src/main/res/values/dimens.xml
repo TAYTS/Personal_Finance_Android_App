@@ -1,0 +1,15 @@
+<resources>
+    <dimen name="fab_margin">30dp</dimen>
+    <dimen name="design_fab_size_normal">72dp</dimen>
+    <dimen name="design_fab_image_size">42dp</dimen>
+    <dimen name="layoutMarginSmall">8dp</dimen>
+    <dimen name="paddingSmall">8dp</dimen>
+
+    <!-- Form Layout -->
+    <dimen name="iconHeight">24dp</dimen>
+    <dimen name="iconWidth">21dp</dimen>
+    <dimen name="drawPadding">10dp</dimen>
+    <dimen name="editMargin">10dp</dimen>
+    <dimen name="textSizeForm">18sp</dimen>
+    
+</resources>

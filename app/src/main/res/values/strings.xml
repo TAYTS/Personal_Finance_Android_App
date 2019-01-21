@@ -1,0 +1,67 @@
+<resources>
+    <!-- Main Layout Text -->
+    <string name="app_name">Personal Finance</string>
+    <string name="action_settings">Settings</string>
+    <string name="contentDescriptionBullet">bullet icon</string>
+
+    <!-- Type String -->
+    <string name="typeSalary">salary</string>
+    <string name="typeEntertainment">entertainment</string>
+    <string name="typeFood">food</string>
+    <string name="typeLoan">loan</string>
+    <string name="typeOthers">others</string>
+
+    <!-- Record Type -->
+    <string name="recordID">recordType</string>
+    <integer name="recordIncome">0</integer>
+    <integer name="recordExpense">1</integer>
+    <string name="recordIncomeTitle">INCOME</string>
+    <string name="recordExpenseTitle">EXPENSE</string>
+
+    <!-- Form Layout text -->
+    <string name="hintAmount">Amount</string>
+    <string name="hintDescription">Description</string>
+    <string name="hintDate">Date</string>
+    <string name="hintType">Type</string>
+    <string name="buttonTextAdd">ADD</string>
+    <string name="buttonTextUpdate">UPDATE</string>
+
+    <!-- Income Type -->
+    <string-array name="income_type">
+        <item>Type</item>
+        <item>Salary</item>
+        <item>Others</item>
+    </string-array>
+
+    <!-- Expenses Type -->
+    <string-array name="expenses_type">
+        <item>Type</item>
+        <item>Entertainment</item>
+        <item>Food</item>
+        <item>Loan</item>
+        <item>Others</item>
+    </string-array>
+
+    <!-- Month String -->
+    <string-array name="months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
+    <string name="historyAmt">Amount:</string>
+    <string name="historyDesc">Descriptions:</string>
+    <string name="historyType">Type:</string>
+    <string name="historyDate">Date:</string>
+
+
+</resources>
