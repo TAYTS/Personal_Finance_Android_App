@@ -20,7 +20,6 @@ import java.util.Locale;
 /*
  * Populate the Description List View inside the Summary View
  */
-
 public class DescriptionArrayAdapter extends ArrayAdapter<String> {
     private Context context;
     private final LinkedHashMap<String, String> descriptions;
