@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -27,6 +28,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+/*
+ * Handling add and update record activity
+ */
 public class FormActivity extends AppCompatActivity {
     private int recordType;
     private TextView textViewTitle;
@@ -36,6 +40,7 @@ public class FormActivity extends AppCompatActivity {
     private Spinner spinnerType;
     private Button buttonAddRecord;
     private Calendar calendar;
+    private Calendar threshold;
     private Locale locale = new Locale("en","MY");
     private String[] typesArray;
     private Record record;
@@ -54,6 +59,12 @@ public class FormActivity extends AppCompatActivity {
 
         // Get Calendar instance
         calendar = Calendar.getInstance(locale);
+
+        // Set the calendar threshold
+        threshold = Calendar.getInstance(locale);
+        threshold.set(Calendar.YEAR, threshold.get(Calendar.YEAR));
+        threshold.set(Calendar.MONTH, 0);
+        threshold.set(Calendar.DAY_OF_MONTH, 1);
 
 
         // Get all the views
@@ -171,6 +182,7 @@ public class FormActivity extends AppCompatActivity {
                 // DatePickerDialog Settings
                 datePickerDialog.setIcon(R.drawable.ic_calendar);
                 datePickerDialog.setTitle("Please select the date");
+                datePickerDialog.getDatePicker().setMinDate(threshold.getTimeInMillis());
                 datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
                 datePickerDialog.show();
             }
@@ -256,8 +268,6 @@ public class FormActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
 

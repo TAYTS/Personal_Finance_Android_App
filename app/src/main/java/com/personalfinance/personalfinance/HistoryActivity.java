@@ -17,6 +17,10 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+/*
+ * Display all the record entry with details
+ * Handling update and delete record
+ */
 public class HistoryActivity extends AppCompatActivity {
     private static Locale locale = new Locale("en","MY");
     private Spinner spinnerMonth;
@@ -48,6 +52,7 @@ public class HistoryActivity extends AppCompatActivity {
         spinnerMonth.setAdapter(monthsAdapter);
         spinnerMonth.setSelection(startDate.get(Calendar.MONTH));
 
+        // Set the observer for the specific month records
         recordViewModel.getAllByMonth().observe(this, new Observer<List<Record>>() {
                     @Override
                     public void onChanged(@Nullable List<Record> records) {
@@ -76,6 +81,7 @@ public class HistoryActivity extends AppCompatActivity {
         });
     }
 
+    // Delegate the intent result handling to HistoryArrayAdapter class
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         historyArrayAdapter.onActivityResult(requestCode, resultCode, data);

@@ -12,6 +12,9 @@ import java.util.List;
 import static android.arch.persistence.room.OnConflictStrategy.IGNORE;
 import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
+/*
+ * SQL operations for RECORD table
+ */
 @Dao
 public interface RecordDao {
 
