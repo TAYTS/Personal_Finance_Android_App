@@ -17,6 +17,7 @@ public class RecordRepository {
     private LiveData<List<Record>> allRecord;
     private MutableLiveData<List<RecordSumPojo>> incomeTotal = new MutableLiveData<List<RecordSumPojo>>();
     private MutableLiveData<List<RecordSumPojo>> expenseTotal = new MutableLiveData<List<RecordSumPojo>>();
+    private MutableLiveData<List<Record>> monthRecord = new MutableLiveData<List<Record>>();
     private static Locale locale = new Locale("en","MY");
 
     RecordRepository(Application application) {
@@ -40,6 +41,7 @@ public class RecordRepository {
     LiveData<List<Record>> getAll() { return allRecord; }
     MutableLiveData<List<RecordSumPojo>> getIncomeTotal() { return incomeTotal; }
     MutableLiveData<List<RecordSumPojo>> getExpenseTotal() { return expenseTotal; }
+    MutableLiveData<List<Record>> getAllByMonth() { return monthRecord; }
 
 
     // Insert Record
@@ -61,15 +63,36 @@ public class RecordRepository {
         }
     }
 
+
     // Get all record by month
     public void getRecordByMonth(Calendar startDate, Calendar endDate) {
-//        allRecord.postValue(recordDao.getAll(startDate, endDate));
+        new mthRecAsyncTask(recordDao).execute(startDate, endDate);
+    }
+
+    private class mthRecAsyncTask extends AsyncTask<Calendar, Void, List<Record>> {
+        private RecordDao asyncTaskDao;
+
+        mthRecAsyncTask(RecordDao dao) {
+            this.asyncTaskDao = dao;
+        }
+
+        @Override
+        protected List<Record> doInBackground(Calendar... calendars) {
+            Calendar startDate = calendars[0];
+            Calendar endDate = calendars[1];
+            return this.asyncTaskDao.getRecordByMonth(startDate, endDate);
+        }
+
+        @Override
+        protected void onPostExecute(List<Record> records) {
+            monthRecord.setValue(records);
+        }
     }
 
 
     // Get Sum By Type
     public void getSumByType(int recordType, Calendar startDate, Calendar endDate) {
-        new sumAsyncTask(recordDao, recordType).execute(recordType, startDate, endDate);
+        new sumAsyncTask(recordDao, recordType).execute(startDate, endDate);
     }
 
     private class sumAsyncTask extends AsyncTask<Object, Void, List<RecordSumPojo>> {
@@ -83,10 +106,9 @@ public class RecordRepository {
 
         @Override
         protected List<RecordSumPojo> doInBackground(final Object... objects) {
-            int recordType = (int) objects[0];
-            Calendar startDate = (Calendar) objects[1];
-            Calendar endDate = (Calendar) objects[2];
-            return this.asyncTaskDao.getSumByType(recordType, startDate, endDate);
+            Calendar startDate = (Calendar) objects[0];
+            Calendar endDate = (Calendar) objects[1];
+            return this.asyncTaskDao.getSumByType(this.recordType, startDate, endDate);
         }
 
         @Override
@@ -96,6 +118,40 @@ public class RecordRepository {
             } else {
                 expenseTotal.setValue(result);
             }
+        }
+    }
+
+    // Delete Record
+    public void delete(Long recId) {
+        new deleteAsyncTask(recordDao).execute(recId);
+    }
+
+    private class deleteAsyncTask extends AsyncTask<Long, Void, Void> {
+        private RecordDao asyncTaskDao;
+
+        deleteAsyncTask(RecordDao dao) {
+            this.asyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Long... params) {
+            asyncTaskDao.deleteRecord(params[0]);
+            return null;
+        }
+    }
+
+    // Update Record
+    public void update(Record record) { new updateAsyncTask(recordDao).execute(record); }
+
+    private class updateAsyncTask extends AsyncTask<Record, Void, Void> {
+        private RecordDao asyncTaskDao;
+
+        updateAsyncTask(RecordDao dao) { this.asyncTaskDao = dao; }
+
+        @Override
+        protected Void doInBackground(Record... records) {
+            asyncTaskDao.updateRecord(records[0]);
+            return null;
         }
     }
 

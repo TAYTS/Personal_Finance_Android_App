@@ -3,20 +3,17 @@ package com.personalfinance.personalfinance;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -25,9 +22,9 @@ import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -44,8 +41,11 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<LinkedHashMap<String, String>> descriptions = new ArrayList<>();
     private static final HashMap<String, BigDecimal> incomeAmt = new HashMap<>();
     private static final HashMap<String, BigDecimal> expenseAmt = new HashMap<>();
-    private ArrayList<HashMap<String, BigDecimal>> amount = new ArrayList<>();
+    private ArrayList<HashMap<String, BigDecimal>> amountType = new ArrayList<>();
+    private BigDecimal incomeTotal = new BigDecimal(0);
+    private BigDecimal expenseTotal = new BigDecimal(0);
 
+    private TextView textViewBalance;
     private Spinner spinnerMonth;
     private FloatingActionButton fabIncome;
     private FloatingActionButton fabRecord;
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         );
 
         // Income Descriptions (Order is important)
-        String[] incomeType = getResources().getStringArray(R.array.income_type);
+        final String[] incomeType = getResources().getStringArray(R.array.income_type);
         for (String type : incomeType) {
             if (!type.equals("Type")) {
                 incomeDescriptions.put(
@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Get all the views
+        textViewBalance = findViewById(R.id.textViewBalance);
         spinnerMonth = findViewById(R.id.spinnerMonth);
         pieChartViewPager = findViewById(R.id.summaryViewPager);
         fabIncome = findViewById(R.id.incomeFAB);
@@ -140,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 // Handle record update (Update summary view)
                 recordViewModel.getSumByType(0, startDate, endDate);
                 recordViewModel.getSumByType(1, startDate, endDate);
+                updateBalance();
             }
         });
 
@@ -147,9 +149,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable List<RecordSumPojo> recordSumPojos) {
                 descriptions.add(0, getDescriptionString(recordSumPojos, 0));
-                amount.add(0, getAllAmount(recordSumPojos, 0));
+                amountType.add(0, getAllAmountType(recordSumPojos, 0));
                 pieData.add(0, getPieData(recordSumPojos));
+                incomeTotal = getTotal(recordSumPojos);
                 summarySlideAdapter.notifyDataSetChanged();
+                updateBalance();
             }
         });
 
@@ -157,11 +161,12 @@ public class MainActivity extends AppCompatActivity {
         recordViewModel.getExpenseTotal().observe(this, new Observer<List<RecordSumPojo>>() {
             @Override
             public void onChanged(@Nullable List<RecordSumPojo> recordSumPojos) {
-                Log.d("FINANCE_TESTING", "expense changed");
                 descriptions.add(1, getDescriptionString(recordSumPojos, 1));
-                amount.add(1, getAllAmount(recordSumPojos, 1));
+                amountType.add(1, getAllAmountType(recordSumPojos, 1));
                 pieData.add(1, getPieData(recordSumPojos));
                 summarySlideAdapter.notifyDataSetChanged();
+                expenseTotal = getTotal(recordSumPojos);
+                updateBalance();
             }
         });
 
@@ -191,8 +196,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Set Pie Chart View
-        // TODO: Dynamic pieChartCount
-        summarySlideAdapter = new SummarySlideAdapter(this, 2, pieChartTitles, pieData, descriptions, amount);
+        summarySlideAdapter = new SummarySlideAdapter(
+                this,
+                2,
+                pieChartTitles,
+                pieData,
+                descriptions,
+                amountType
+        );
         pieChartViewPager.setAdapter(summarySlideAdapter);
 
 
@@ -210,6 +221,8 @@ public class MainActivity extends AppCompatActivity {
         fabRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -225,28 +238,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -254,14 +245,13 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == NEW_RECORD_REQUEST_CODE) {
             // Check the replied status
             if (resultCode == RESULT_OK) {
-                // Get SharedPreference
-                String sharedPrefFile = getResources().getString(R.string.sharedPreference);
-                SharedPreferences formData = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
-                Gson gson = new Gson();
-                String json = formData.getString("record", "");
-                if (!json.isEmpty()) {
-                    Record record = gson.fromJson(json, Record.class);
-                    recordViewModel.insert(record);
+                if (data.hasExtra("record")) {
+                    Gson gson = new Gson();
+                    String json = data.getExtras().getString("record");
+                    if (json != null) {
+                        Record record = gson.fromJson(json, Record.class);
+                        recordViewModel.insert(record);
+                    }
                 }
             }
         }
@@ -289,6 +279,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // Get description, percentage and total for each type
     private LinkedHashMap<String, String> getDescriptionString(List<RecordSumPojo> recordSumPojos, int recordType) {
         LinkedHashMap<String, String> descriptions = new LinkedHashMap<>();
 
@@ -306,7 +297,6 @@ public class MainActivity extends AppCompatActivity {
                 sum = sum.add(recordSumPojo.total);
             }
 
-
             // Calculate percentage
             if (sum.compareTo(BigDecimal.ZERO) >  0) {
                 for (RecordSumPojo recordSumPojo : recordSumPojos) {
@@ -322,7 +312,8 @@ public class MainActivity extends AppCompatActivity {
         return descriptions;
     }
 
-    private HashMap<String, BigDecimal> getAllAmount(List<RecordSumPojo> recordSumPojos, int recordType) {
+    // Get total for each type
+    private HashMap<String, BigDecimal> getAllAmountType(List<RecordSumPojo> recordSumPojos, int recordType) {
         HashMap<String, BigDecimal> newAmount = new HashMap<>();
 
         if (recordType == 0) {
@@ -336,6 +327,29 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return newAmount;
+    }
+
+    // Get total
+    private BigDecimal getTotal(List<RecordSumPojo> recordSumPojos) {
+        BigDecimal total = new BigDecimal(0);
+
+        for (RecordSumPojo recordSumPojo : recordSumPojos) {
+            total = total.add(recordSumPojo.total);
+        }
+        return total;
+    }
+
+    // Update balance
+    private void updateBalance() {
+        BigDecimal balance = incomeTotal.subtract(expenseTotal);
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
+        String moneyString = formatter.format(balance);
+        textViewBalance.setText(moneyString);
+        if (balance.compareTo(BigDecimal.ZERO) > 0) {
+            textViewBalance.setTextColor(Color.BLUE);
+        } else {
+            textViewBalance.setTextColor(Color.RED);
+        }
     }
 
 

@@ -58,7 +58,7 @@ public class DescriptionArrayAdapter extends ArrayAdapter<String> {
 
         viewHolder.imageViewBullet.setImageResource(getImgRes(type));
         viewHolder.textViewType.setText(descriptions.get(type));
-        viewHolder.textViewAmount.setText(getFormatterMoneyStr(amount.get(type)));
+        viewHolder.textViewAmount.setText(getFormattedMoneyStr(amount.get(type)));
 
         // Return the completed view to render on screen
         return convertView;
@@ -87,7 +87,7 @@ public class DescriptionArrayAdapter extends ArrayAdapter<String> {
     }
 
     // Method: Get formatted money string
-    private String getFormatterMoneyStr(BigDecimal amount) {
+    private String getFormattedMoneyStr(BigDecimal amount) {
         Locale locale = new Locale("en","MY");
         NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
         String moneyString = formatter.format(amount);

@@ -1,17 +1,13 @@
 package com.personalfinance.personalfinance;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.LivePagedListProvider;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
-import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.Update;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import static android.arch.persistence.room.OnConflictStrategy.IGNORE;
@@ -44,16 +40,16 @@ public interface RecordDao {
     LiveData<List<Record>> getAll();
 
     // Update record
-    @Update(onConflict = REPLACE)
-    void updateRecord(Record record);
+    @Update
+    void updateRecord(Record... records);
 
     // Delete record by Object
-    @Delete
-    int deleteRecord(Record record);
+//    @Delete
+//    int deleteRecord(Record record);
 
     // Delete record by ID
     @Query("DELETE FROM RECORD WHERE ID = :id")
-    int deleteRecord(int id);
+    int deleteRecord(long id);
 
     // Sum by column
     @Query("SELECT TYPE as type, SUM(AMOUNT) as total " +

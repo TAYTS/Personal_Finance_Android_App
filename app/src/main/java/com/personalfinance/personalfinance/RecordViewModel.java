@@ -15,6 +15,7 @@ public class RecordViewModel extends AndroidViewModel {
     private LiveData<List<Record>> allRecords;
     private MutableLiveData<List<RecordSumPojo>> incomeTotal;
     private MutableLiveData<List<RecordSumPojo>> expenseTotal;
+    private MutableLiveData<List<Record>> allMthRecords;
 
     public RecordViewModel(Application application) {
         super(application);
@@ -22,11 +23,14 @@ public class RecordViewModel extends AndroidViewModel {
         allRecords = repository.getAll();
         incomeTotal = repository.getIncomeTotal();
         expenseTotal = repository.getExpenseTotal();
+        allMthRecords = repository.getAllByMonth();
+
     }
 
     LiveData<List<Record>> getAll() { return allRecords; }
     MutableLiveData<List<RecordSumPojo>> getIncomeTotal() { return incomeTotal; }
     MutableLiveData<List<RecordSumPojo>> getExpenseTotal() { return expenseTotal; }
+    MutableLiveData<List<Record>> getAllByMonth() { return allMthRecords; }
 
 
     // Methods
@@ -38,7 +42,14 @@ public class RecordViewModel extends AndroidViewModel {
         repository.getSumByType(recordType, startDate, endDate);
     }
 
+    // Get record by month
     public void getRecordByMonth(Calendar startDate, Calendar endDate) {
         repository.getRecordByMonth(startDate, endDate);
     }
+
+    // Delete record
+    public void delete(Long recId) { repository.delete(recId); }
+
+    // Update record
+    public void update(Record record) { repository.update(record); }
 }

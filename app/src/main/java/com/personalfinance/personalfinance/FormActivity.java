@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,6 +41,7 @@ public class FormActivity extends AppCompatActivity {
     private Locale locale = new Locale("en","MY");
     private String[] typesArray;
     private RecordViewModel recordViewModel;
+    private Record record;
 
     // Define constant
     private static final String DATEFORMAT = "dd MMMM yyyy";
@@ -74,7 +76,7 @@ public class FormActivity extends AppCompatActivity {
             textViewTitle.setText(R.string.recordExpenseTitle);
             typesArray = getResources().getStringArray(R.array.expenses_type);
         }
-        updateLabel();
+        updateLabel(calendar);
 
 
         // Disable Edit Text Amount from Select All and Paste operation
@@ -112,21 +114,7 @@ public class FormActivity extends AppCompatActivity {
 
                             // Prevent infinity loop
                             editTextAmount.removeTextChangedListener(this);
-
-                            if (!textAmount.isEmpty()) {
-                                textAmount = "RM" + textAmount;
-
-                                if (textAmount.contains(".")) {
-                                    // Prevent multiple "."
-                                    textAmount.split("\\.", -1);
-
-                                    // Stop at 2 decimal
-                                    int fractionLength = textAmount.substring(textAmount.indexOf(".")).length() - 1;
-                                    if (fractionLength > 2) {
-                                        textAmount = textAmount.substring(0, textAmount.indexOf(".") + 3);
-                                    }
-                                }
-                            }
+                            textAmount = currencyFormatter(textAmount);
 
                             // Update the Edit Text Amount
                             editTextAmount.setText(textAmount);
@@ -177,7 +165,7 @@ public class FormActivity extends AppCompatActivity {
                                 calendar.set(Calendar.MONTH, month);
                                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                                updateLabel();
+                                updateLabel(calendar);
                             }
                         }, year, month, day_of_month
                 );
@@ -224,6 +212,20 @@ public class FormActivity extends AppCompatActivity {
         spinnerType.setAdapter(typeAdapter);
 
 
+        // Set initial value for update record
+        Gson gson = new Gson();
+        String json = intent.getStringExtra("record");
+        if (json != null) {
+            record = gson.fromJson(json, Record.class);
+            editTextAmount.setText(currencyFormatter(record.getAmount().toPlainString()));
+            editTextDescription.setText(record.getDescription());
+            updateLabel(record.getCreate_timestamp());
+            int pos = typeAdapter.getPosition(record.getType());
+            spinnerType.setSelection(pos);
+            buttonAddRecord.setText(R.string.buttonTextUpdate);
+        }
+
+
         // Add Button Add Record Listener
         buttonAddRecord.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,19 +237,25 @@ public class FormActivity extends AppCompatActivity {
                 String type = spinnerType.getSelectedItemPosition() > 0 ? spinnerType.getSelectedItem().toString() : "";
 
                 if (!amount.isEmpty() && !description.isEmpty() && !date.isEmpty() && !type.isEmpty()) {
-                    Intent replyIntent = new Intent();
-                    String sharedPrefFile = getResources().getString(R.string.sharedPreference);
-                    SharedPreferences formData = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
-                    SharedPreferences.Editor editorFormData = formData.edit();
-                    Gson gson = new Gson();
-
                     BigDecimal amtBigDecimal = new BigDecimal(amount);
-                    Record newRecord = new Record(amtBigDecimal, description, type, recordType, calendar);
-                    String json = gson.toJson(newRecord);
-                    editorFormData.putString("record", json);
-                    editorFormData.commit();
-                    setResult(RESULT_OK, replyIntent);
-                    finish();
+                    if (amtBigDecimal.compareTo(BigDecimal.ZERO) > 0) {
+                        Intent replyIntent = new Intent();
+                        Gson gson = new Gson();
+                        String json;
+                        if (record != null) {
+                            record.setAmount(amtBigDecimal);
+                            record.setDescription(description);
+                            record.setType(type);
+                            record.setCreate_timestamp(calendar);
+                            json = gson.toJson(record);
+                        } else {
+                            Record newRecord = new Record(amtBigDecimal, description, type, recordType, calendar);
+                            json = gson.toJson(newRecord);
+                        }
+                        replyIntent.putExtra("record", json);
+                        setResult(RESULT_OK, replyIntent);
+                        finish();
+                    }
                 }
             }
         });
@@ -257,9 +265,28 @@ public class FormActivity extends AppCompatActivity {
 
 
     // Method: Update the Edit Text Calendar text
-    private void updateLabel() {
+    private void updateLabel(Calendar date) {
         SimpleDateFormat dateFormatter = new SimpleDateFormat(DATEFORMAT, locale);
-        editTextDate.setText(dateFormatter.format(calendar.getTime()));
+        editTextDate.setText(dateFormatter.format(date.getTime()));
+    }
+
+    // Method: Format currency string
+    private String currencyFormatter(String textAmount) {
+        if (!textAmount.isEmpty()) {
+            textAmount = "RM" + textAmount;
+
+            if (textAmount.contains(".")) {
+                // Prevent multiple "."
+                textAmount.split("\\.", -1);
+
+                // Stop at 2 decimal
+                int fractionLength = textAmount.substring(textAmount.indexOf(".")).length() - 1;
+                if (fractionLength > 2) {
+                    textAmount = textAmount.substring(0, textAmount.indexOf(".") + 3);
+                }
+            }
+        }
+        return textAmount;
     }
 }
 

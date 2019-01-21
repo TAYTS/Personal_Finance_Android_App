@@ -1,7 +1,4 @@
 <resources>
-    <!-- Shared Preference -->
-    <string name="sharedPreference">com.personalfinance.personalfinance.sharedPreference</string>
-
     <!-- Main Layout Text -->
     <string name="app_name">Personal Finance</string>
     <string name="action_settings">Settings</string>
@@ -26,7 +23,8 @@
     <string name="hintDescription">Description</string>
     <string name="hintDate">Date</string>
     <string name="hintType">Type</string>
-    <string name="buttonText">ADD</string>
+    <string name="buttonTextAdd">ADD</string>
+    <string name="buttonTextUpdate">UPDATE</string>
 
     <!-- Income Type -->
     <string-array name="income_type">
@@ -59,6 +57,11 @@
         <item>November</item>
         <item>December</item>
     </string-array>
+
+    <string name="historyAmt">Amount:</string>
+    <string name="historyDesc">Descriptions:</string>
+    <string name="historyType">Type:</string>
+    <string name="historyDate">Date:</string>
 
 
 </resources>

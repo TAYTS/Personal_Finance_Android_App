@@ -11,4 +11,7 @@
     <color name="colorSalary">#1ABC9C</color>
     <color name="colorFormIcon">#95a5a6</color>
     <color name="colorAddButton">#34495e</color>
+    <color name="colorEditButton">#7181F3</color>
+    <color name="colorDelButton">#E60632</color>
+    <color name="colorListHistory">#ECF0F1</color>
 </resources>

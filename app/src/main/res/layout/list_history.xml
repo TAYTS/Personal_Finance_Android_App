@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/row_history"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
+    android:orientation="horizontal"
+    android:background="@color/colorListHistory">
+
+
+    <LinearLayout
+        android:id="@+id/historyDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <!-- Amount -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginTop="@dimen/layoutMarginSmall"
+            android:layout_marginEnd="@dimen/layoutMarginSmall"
+            android:layout_marginBottom="@dimen/layoutMarginSmall"
+            android:gravity="top|center_vertical"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/historyAmt"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RM999.00"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+
+        <!-- Description -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginTop="@dimen/layoutMarginSmall"
+            android:layout_marginEnd="@dimen/layoutMarginSmall"
+            android:layout_marginBottom="@dimen/layoutMarginSmall"
+            android:gravity="top|center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/historyDesc"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/descriptions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="asdasdasdadsfsdfsdfsdfsdfsdfsdasdasdasd"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+
+        <!-- Type -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginTop="@dimen/layoutMarginSmall"
+            android:layout_marginEnd="@dimen/layoutMarginSmall"
+            android:layout_marginBottom="@dimen/layoutMarginSmall"
+            android:gravity="top|center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/historyType"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="Entertainment"/>
+        </LinearLayout>
+
+
+        <!-- Date -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginTop="@dimen/layoutMarginSmall"
+            android:layout_marginEnd="@dimen/layoutMarginSmall"
+            android:layout_marginBottom="@dimen/layoutMarginSmall"
+            android:gravity="top|center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/historyDate"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="10 January 2019"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/historyFunc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.1"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/btnEdit"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="@dimen/layoutMarginSmall"
+            android:layout_marginBottom="@dimen/layoutMarginSmall"
+            android:src="@drawable/ic_edit"
+            android:background="@null"/>
+
+        <ImageButton
+            android:id="@+id/btnDelete"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="@dimen/layoutMarginSmall"
+            android:layout_marginBottom="@dimen/layoutMarginSmall"
+            android:src="@drawable/ic_delete"
+            android:background="@null"/>
+    </LinearLayout>
+
+
+</LinearLayout>
