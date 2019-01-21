@@ -8,6 +8,10 @@ import android.support.annotation.NonNull;
 import java.math.BigDecimal;
 import java.util.Calendar;
 
+/*
+ * Object class for database
+ * Declare the column for the RECORD table
+ */
 @Entity(tableName = "RECORD")
 public class Record {
 

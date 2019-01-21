@@ -8,7 +8,9 @@ import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-
+/*
+ * Database management
+ */
 @Database(entities = {Record.class}, version = 1, exportSchema = false)
 @TypeConverters({BigDecimalConverter.class, CalendarConverter.class})
 public abstract class FinanceDatabase extends RoomDatabase {
@@ -19,6 +21,7 @@ public abstract class FinanceDatabase extends RoomDatabase {
 
     static FinanceDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
+            // Ensure singleton
             synchronized (FinanceDatabase.class) {
                 if (INSTANCE == null) {
                     // Create database

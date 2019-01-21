@@ -9,6 +9,10 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+/*
+ * Bind the view model and the Dao
+ * Handling all the SQL operations in the background using AsyncTask
+ */
 public class RecordRepository {
 
     private RecordDao recordDao;
