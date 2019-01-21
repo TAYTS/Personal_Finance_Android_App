@@ -7,7 +7,6 @@ import android.arch.lifecycle.MutableLiveData;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class RecordViewModel extends AndroidViewModel {
     private RecordRepository repository;
