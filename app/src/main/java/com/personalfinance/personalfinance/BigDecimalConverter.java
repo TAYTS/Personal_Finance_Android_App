@@ -4,6 +4,9 @@ import android.arch.persistence.room.TypeConverter;
 
 import java.math.BigDecimal;
 
+/*
+ * Conversion between BigDecimal data type and Long data type(Save inside database)
+ */
 
 public class BigDecimalConverter {
     @TypeConverter
