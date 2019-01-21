@@ -27,6 +27,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+/*
+ * Handling add and update record activity
+ */
 public class FormActivity extends AppCompatActivity {
     private int recordType;
     private TextView textViewTitle;
@@ -256,8 +259,6 @@ public class FormActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
 
