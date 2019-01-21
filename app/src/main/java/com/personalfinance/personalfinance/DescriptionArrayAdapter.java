@@ -17,7 +17,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 
-
+/*
+ * Populate the Description List View inside the Summary View
+ */
 public class DescriptionArrayAdapter extends ArrayAdapter<String> {
     private Context context;
     private final LinkedHashMap<String, String> descriptions;
@@ -30,7 +32,6 @@ public class DescriptionArrayAdapter extends ArrayAdapter<String> {
         this.descriptions = descriptions;
         this.amount = amount;
     }
-
 
     private static class ViewHolder {
         ImageView imageViewBullet;
@@ -54,8 +55,11 @@ public class DescriptionArrayAdapter extends ArrayAdapter<String> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
+        // Get type string
         String type = (String)(descriptions.keySet().toArray())[position];
 
+        // Setup the view components
         viewHolder.imageViewBullet.setImageResource(getImgRes(type));
         viewHolder.textViewType.setText(descriptions.get(type));
         viewHolder.textViewAmount.setText(getFormattedMoneyStr(amount.get(type)));
@@ -66,10 +70,12 @@ public class DescriptionArrayAdapter extends ArrayAdapter<String> {
 
     @Override
     public boolean isEnabled(int position) {
+        // Disable scrolling
         return false;
     }
 
 
+    // Method: Map the type to the corresponding bullet img
     private int getImgRes(String type) {
         if (type.equals(this.context.getResources().getString(R.string.typeSalary))) {
             return R.drawable.ic_bullet_salary;

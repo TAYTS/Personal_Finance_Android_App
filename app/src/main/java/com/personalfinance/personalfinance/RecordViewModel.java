@@ -7,8 +7,10 @@ import android.arch.lifecycle.MutableLiveData;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
+/*
+ * Update the view by getting the value from the RecordRepository
+ */
 public class RecordViewModel extends AndroidViewModel {
     private RecordRepository repository;
 

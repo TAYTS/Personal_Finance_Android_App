@@ -3,13 +3,15 @@ package com.personalfinance.personalfinance;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
-import java.util.Date;
 
+/*
+ * Object class for database
+ * Declare the column for the RECORD table
+ */
 @Entity(tableName = "RECORD")
 public class Record {
 
@@ -87,5 +89,6 @@ public class Record {
         return this.create_timestamp;
     }
 
+    // Create Timestamp Setter
     public void setCreate_timestamp(Calendar timestamp) { this.create_timestamp = timestamp; }
 }

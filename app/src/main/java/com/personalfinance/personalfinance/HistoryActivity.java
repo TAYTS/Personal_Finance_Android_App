@@ -4,23 +4,23 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+/*
+ * Display all the record entry with details
+ * Handling update and delete record
+ */
 public class HistoryActivity extends AppCompatActivity {
     private static Locale locale = new Locale("en","MY");
     private Spinner spinnerMonth;
@@ -52,6 +52,7 @@ public class HistoryActivity extends AppCompatActivity {
         spinnerMonth.setAdapter(monthsAdapter);
         spinnerMonth.setSelection(startDate.get(Calendar.MONTH));
 
+        // Set the observer for the specific month records
         recordViewModel.getAllByMonth().observe(this, new Observer<List<Record>>() {
                     @Override
                     public void onChanged(@Nullable List<Record> records) {
@@ -80,6 +81,7 @@ public class HistoryActivity extends AppCompatActivity {
         });
     }
 
+    // Delegate the intent result handling to HistoryArrayAdapter class
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         historyArrayAdapter.onActivityResult(requestCode, resultCode, data);

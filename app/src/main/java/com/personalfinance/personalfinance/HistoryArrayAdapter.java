@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +22,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+
+/*
+ * Populate the History View with the specific month records
+ */
 public class HistoryArrayAdapter extends ArrayAdapter<Record> {
     private Context context;
     private ArrayList<Record> history;
@@ -59,7 +62,6 @@ public class HistoryArrayAdapter extends ArrayAdapter<Record> {
         final ViewHolder viewHolder;
 
         // Get the current history record
-        // TODO: Handle empty database
         Record current = history.get(position);
 
         if (convertView == null) {
@@ -77,7 +79,7 @@ public class HistoryArrayAdapter extends ArrayAdapter<Record> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        // Set the text view
+        // Set the amount text and color
         if (current.getRecordType() == 0 ){
             viewHolder.textViewAmt.setText(getFormattedMoneyStr(current.getAmount()));
             viewHolder.textViewAmt.setTextColor(Color.BLUE);
@@ -123,6 +125,7 @@ public class HistoryArrayAdapter extends ArrayAdapter<Record> {
         return convertView;
     }
 
+    // Handling the intent result for Edit Record
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check the request type
         if (requestCode == UPDATE_RECORD_REQUEST_CODE) {

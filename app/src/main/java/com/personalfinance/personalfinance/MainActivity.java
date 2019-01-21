@@ -135,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
         // Record View Model
         recordViewModel = ViewModelProviders.of(this).get(RecordViewModel.class);
 
+        // Set observer for all the records
         recordViewModel.getAll().observe(this, new Observer<List<Record>>() {
             @Override
             public void onChanged(@Nullable List<Record> records) {
@@ -145,30 +146,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        // Set observer for total income group by type
         recordViewModel.getIncomeTotal().observe(this, new Observer<List<RecordSumPojo>>() {
             @Override
             public void onChanged(@Nullable List<RecordSumPojo> recordSumPojos) {
-                descriptions.add(0, getDescriptionString(recordSumPojos, 0));
-                amountType.add(0, getAllAmountType(recordSumPojos, 0));
-                pieData.add(0, getPieData(recordSumPojos));
-                incomeTotal = getTotal(recordSumPojos);
-                summarySlideAdapter.notifyDataSetChanged();
-                updateBalance();
+                if (recordSumPojos != null) {
+                    descriptions.add(0, getDescriptionString(recordSumPojos, 0));
+                    amountType.add(0, getAllAmountType(recordSumPojos, 0));
+                    pieData.add(0, getPieData(recordSumPojos));
+                    incomeTotal = getTotal(recordSumPojos);
+                    summarySlideAdapter.notifyDataSetChanged();
+                    updateBalance();
+                }
             }
         });
 
-
+        // Set observer for total expense group by type
         recordViewModel.getExpenseTotal().observe(this, new Observer<List<RecordSumPojo>>() {
             @Override
             public void onChanged(@Nullable List<RecordSumPojo> recordSumPojos) {
-                descriptions.add(1, getDescriptionString(recordSumPojos, 1));
-                amountType.add(1, getAllAmountType(recordSumPojos, 1));
-                pieData.add(1, getPieData(recordSumPojos));
-                summarySlideAdapter.notifyDataSetChanged();
-                expenseTotal = getTotal(recordSumPojos);
-                updateBalance();
+                if (recordSumPojos != null) {
+                    descriptions.add(1, getDescriptionString(recordSumPojos, 1));
+                    amountType.add(1, getAllAmountType(recordSumPojos, 1));
+                    pieData.add(1, getPieData(recordSumPojos));
+                    expenseTotal = getTotal(recordSumPojos);
+                    summarySlideAdapter.notifyDataSetChanged();
+                    updateBalance();
+                }
             }
         });
+
 
         // Setup Spinner Month
         ArrayAdapter<CharSequence> monthsAdapter = ArrayAdapter.createFromResource(this, R.array.months, R.layout.months_spinner);
@@ -196,6 +204,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Set Pie Chart View
+        descriptions.add(0, getDescriptionString(new ArrayList<RecordSumPojo>(), 0));
+        amountType.add(0, getAllAmountType(new ArrayList<RecordSumPojo>(), 0));
+        pieData.add(0, getPieData(new ArrayList<RecordSumPojo>()));
+
+        descriptions.add(1, getDescriptionString(new ArrayList<RecordSumPojo>(), 1));
+        amountType.add(1, getAllAmountType(new ArrayList<RecordSumPojo>(), 1));
+        pieData.add(1, getPieData(new ArrayList<RecordSumPojo>()));
         summarySlideAdapter = new SummarySlideAdapter(
                 this,
                 2,
@@ -239,6 +254,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    // Handling intent for Add Record
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         // Check the request type
@@ -257,6 +273,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    // Method: Get the PieData using the Result from "getIncomeTotal" or "getExpenseTotal"
+    // Used to build the pie char
     private PieData getPieData(List<RecordSumPojo> recordSumPojos) {
         ArrayList<Integer> colors = new ArrayList<>();
         List<PieEntry> entries = new ArrayList<>();
@@ -276,10 +295,10 @@ public class MainActivity extends AppCompatActivity {
             entries.add(new PieEntry(0f, ""));
             return new PieData(new PieDataSet(entries, ""));
         }
-
     }
 
-    // Get description, percentage and total for each type
+    // Method: Get description, percentage and total for each type
+    // Used for the populate the Description List View
     private LinkedHashMap<String, String> getDescriptionString(List<RecordSumPojo> recordSumPojos, int recordType) {
         LinkedHashMap<String, String> descriptions = new LinkedHashMap<>();
 
@@ -312,7 +331,8 @@ public class MainActivity extends AppCompatActivity {
         return descriptions;
     }
 
-    // Get total for each type
+    // Method: Get total for each type
+    // Used for the populate the Description List View
     private HashMap<String, BigDecimal> getAllAmountType(List<RecordSumPojo> recordSumPojos, int recordType) {
         HashMap<String, BigDecimal> newAmount = new HashMap<>();
 
@@ -322,14 +342,16 @@ public class MainActivity extends AppCompatActivity {
             newAmount.putAll(expenseAmt);
         }
 
-        for (RecordSumPojo recordSumPojo : recordSumPojos) {
-            newAmount.put(recordSumPojo.type.toLowerCase(), recordSumPojo.total);
+        if (!recordSumPojos.isEmpty()) {
+            for (RecordSumPojo recordSumPojo : recordSumPojos) {
+                newAmount.put(recordSumPojo.type.toLowerCase(), recordSumPojo.total);
+            }
         }
 
         return newAmount;
     }
 
-    // Get total
+    // Method: Get total
     private BigDecimal getTotal(List<RecordSumPojo> recordSumPojos) {
         BigDecimal total = new BigDecimal(0);
 
@@ -339,7 +361,7 @@ public class MainActivity extends AppCompatActivity {
         return total;
     }
 
-    // Update balance
+    // Method: Update balance text view
     private void updateBalance() {
         BigDecimal balance = incomeTotal.subtract(expenseTotal);
         NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
@@ -351,8 +373,6 @@ public class MainActivity extends AppCompatActivity {
             textViewBalance.setTextColor(Color.RED);
         }
     }
-
-
 }
 
 

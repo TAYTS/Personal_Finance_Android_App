@@ -1,7 +1,6 @@
 package com.personalfinance.personalfinance;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -21,6 +20,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+/*
+ * Handling the Slide View in the Home Page
+ */
 public class SummarySlideAdapter extends PagerAdapter {
     Context context;
     LayoutInflater inflater;
@@ -29,12 +31,11 @@ public class SummarySlideAdapter extends PagerAdapter {
     private String[] pieChartTitles;
     private ArrayList<LinkedHashMap<String, String>> descriptions;
     private ArrayList<HashMap<String, BigDecimal>> amountType;
+    private ArrayList<PieData> pieData;
 
     private TextView pieChartTitle;
     private PieChart pieChart;
     private ListView listViewDesciptions;
-
-    private ArrayList<PieData> pieData;
 
     public SummarySlideAdapter(
             Context context,
@@ -94,7 +95,6 @@ public class SummarySlideAdapter extends PagerAdapter {
             Utils.init(context);
             pieChart.getPaint(Chart.PAINT_INFO).setTextSize(Utils.convertDpToPixel(25f));
         }
-
 
         final DescriptionArrayAdapter adapter = new DescriptionArrayAdapter(context, descriptions.get(position), amountType.get(position));
         listViewDesciptions.setAdapter(adapter);
