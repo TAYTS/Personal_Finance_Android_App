@@ -5,6 +5,10 @@ import android.arch.persistence.room.TypeConverter;
 import java.util.Calendar;
 import java.util.Locale;
 
+/*
+ * Conversion between Calendar data type and Long data type(Save inside database)
+ */
+
 public class CalendarConverter {
     private static Locale locale = new Locale("en","MY");
 
