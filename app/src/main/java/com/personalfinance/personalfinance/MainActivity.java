@@ -135,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
         // Record View Model
         recordViewModel = ViewModelProviders.of(this).get(RecordViewModel.class);
 
+        // Set observer for all the records
         recordViewModel.getAll().observe(this, new Observer<List<Record>>() {
             @Override
             public void onChanged(@Nullable List<Record> records) {
@@ -146,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        // Set observer for total income group by type
         recordViewModel.getIncomeTotal().observe(this, new Observer<List<RecordSumPojo>>() {
             @Override
             public void onChanged(@Nullable List<RecordSumPojo> recordSumPojos) {
@@ -160,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Set observer for total expense group by type
         recordViewModel.getExpenseTotal().observe(this, new Observer<List<RecordSumPojo>>() {
             @Override
             public void onChanged(@Nullable List<RecordSumPojo> recordSumPojos) {
@@ -251,6 +254,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    // Handling intent for Add Record
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         // Check the request type
@@ -269,6 +273,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    // Method: Get the PieData using the Result from "getIncomeTotal" or "getExpenseTotal"
+    // Used to build the pie char
     private PieData getPieData(List<RecordSumPojo> recordSumPojos) {
         ArrayList<Integer> colors = new ArrayList<>();
         List<PieEntry> entries = new ArrayList<>();
@@ -288,10 +295,10 @@ public class MainActivity extends AppCompatActivity {
             entries.add(new PieEntry(0f, ""));
             return new PieData(new PieDataSet(entries, ""));
         }
-
     }
 
-    // Get description, percentage and total for each type
+    // Method: Get description, percentage and total for each type
+    // Used for the populate the Description List View
     private LinkedHashMap<String, String> getDescriptionString(List<RecordSumPojo> recordSumPojos, int recordType) {
         LinkedHashMap<String, String> descriptions = new LinkedHashMap<>();
 
@@ -324,7 +331,8 @@ public class MainActivity extends AppCompatActivity {
         return descriptions;
     }
 
-    // Get total for each type
+    // Method: Get total for each type
+    // Used for the populate the Description List View
     private HashMap<String, BigDecimal> getAllAmountType(List<RecordSumPojo> recordSumPojos, int recordType) {
         HashMap<String, BigDecimal> newAmount = new HashMap<>();
 
@@ -343,7 +351,7 @@ public class MainActivity extends AppCompatActivity {
         return newAmount;
     }
 
-    // Get total
+    // Method: Get total
     private BigDecimal getTotal(List<RecordSumPojo> recordSumPojos) {
         BigDecimal total = new BigDecimal(0);
 
@@ -353,7 +361,7 @@ public class MainActivity extends AppCompatActivity {
         return total;
     }
 
-    // Update balance
+    // Method: Update balance text view
     private void updateBalance() {
         BigDecimal balance = incomeTotal.subtract(expenseTotal);
         NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
@@ -365,8 +373,6 @@ public class MainActivity extends AppCompatActivity {
             textViewBalance.setTextColor(Color.RED);
         }
     }
-
-
 }
 
 
